@@ -111,6 +111,7 @@ class SQLStorage(Storage):
                     sql.Column('speed', sql.Float),
                     sql.Column('datetime', sql.DateTime),
                     sql.Column('username', sql.String(128)),
+                    sql.Column('content_length', sql.Integer),
                     sql.Column('track_var', sql.String(128))
                 )
                 # Create the table if it does not exist
@@ -161,6 +162,7 @@ class SQLStorage(Storage):
                 speed=data["speed"],
                 datetime=utcdatetime,
                 username=data["username"],
+                content_length=data["content_length"],
                 track_var=json.dumps(data["track_var"], ensure_ascii=False)
             )
             con.execute(stmt)
