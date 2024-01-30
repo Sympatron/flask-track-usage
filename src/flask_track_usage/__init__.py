@@ -147,6 +147,11 @@ class TrackUsage(object):
         else:
             raise NotImplementedError(
                 'You must set include or exclude type.')
+        
+        if not hasattr(g, "track_var"):
+            g.track_var = None
+        if not hasattr(g, "start_time"):
+            g.start_time = datetime.datetime.utcnow()
 
         now = datetime.datetime.utcnow()
         speed = None
@@ -166,6 +171,7 @@ class TrackUsage(object):
         data = {
             'url': ctx.request.url,
             'user_agent': ctx.request.user_agent,
+            "language": ctx.request.headers.get("Accept-Language", None),
             'server_name': ctx.app.name,
             'blueprint': ctx.request.blueprint,
             'view_args': ctx.request.view_args,
@@ -194,6 +200,7 @@ class TrackUsage(object):
             data['username'] = str(ctx.request.authorization.username)
         elif getattr(self.app, 'login_manager', None) and current_user and not current_user.is_anonymous:
             data['username'] = str(current_user)
+            data["authorization"] = response.status_code != 403
         if self._use_freegeoip:
             clean_ip = quote_plus(str(ctx.request.remote_addr))
             if '{ip}' in self._freegeoip_endpoint:

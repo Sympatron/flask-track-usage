@@ -145,7 +145,7 @@ class SQLStorage(Storage):
             stmt = self.track_table.insert().values(
                 url=data['url'],
                 ua_browser=user_agent.browser,
-                ua_language=user_agent.language,
+                ua_language=user_agent.language or data["language"],
                 ua_platform=user_agent.platform,
                 ua_version=user_agent.version,
                 blueprint=data["blueprint"],
